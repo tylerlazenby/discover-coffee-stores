@@ -1,0 +1,30 @@
+@mixin gradient-background($start, $end) {
+  background: linear-gradient(to bottom, transparent, rgb($end)) rgb($start);
+}
+
+@mixin primary-glow($color) {
+  background: conic-gradient(
+                  from 180deg at 50% 50%,
+                  #{$color}33 0deg,
+                  #{$color}33 55deg,
+                  #{$color}33 120deg,
+                  #{$color}33 160deg,
+                  transparent 360deg
+  );
+}
+
+@mixin secondary-glow($color) {
+  background: radial-gradient(rgba($color, 1), rgba($color, 0));
+}
+
+@mixin tile-border($color) {
+  border-image: conic-gradient(
+                  #{$color}80,
+                  #{$color}40,
+                  #{$color}30,
+                  #{$color}20,
+                  #{$color}10,
+                  #{$color}10,
+                  #{$color}80
+  ) 1;
+}

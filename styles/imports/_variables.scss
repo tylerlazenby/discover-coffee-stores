@@ -1,0 +1,26 @@
+$primary-color-light: #16abff;
+$primary-color-dark: #0141ff;
+
+$secondary-color-light: #fff;
+$secondary-color-dark: #0141ff;
+
+$text-black: rgba(17, 24, 39, 1);
+$text-purple: rgba(67, 56, 202, 1);
+$text-purple-dark: rgba(79, 70, 229, 1);
+$text-white-100: rgba(229, 231, 235, 1);
+
+/**
+  Breakpoints:
+  ------------
+  sm: min-width: 640px; //small device
+  md: min-width: 768px; // medium device
+  lg: min-width: 1024px; // large device
+  xl: min-width: 1280px; // extra large device
+  2xl: min-width: 1536px; // 2 x extra large device
+**/
+
+$breakpointSm: 640px;
+$breakpointMd: 768px;
+$breakpointLg: 1024px;
+$breakpointXl: 1280px;
+$breakpoint2xl: 1536px;

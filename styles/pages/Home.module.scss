@@ -1,0 +1,106 @@
+@import "../imports/variables";
+
+.container {
+  margin-bottom: 14rem;
+}
+
+.main {
+  margin: 2.5rem auto;
+  max-width: 72rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  height: 400px;
+  max-height: 40vh;
+  background: url('/static/hero-image.png') no-repeat 50%;
+  background-size: contain;
+}
+
+.cardLayout {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+
+.card {
+  justify-content: center;
+}
+
+.heading2 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  padding-bottom: 2rem;
+  margin-top: 2rem;
+  color: $text-white-100;
+}
+
+.sectionWrapper {
+  margin-top: 5rem;
+}
+
+@media (min-width: $breakpointSm) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .main {
+    margin-top: 3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .cardLayout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $breakpointMd) {
+  .container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .main {
+    margin-top: 4rem;
+  }
+
+  .heroImage {
+    right: 20%;
+  }
+
+  .cardLayout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $breakpointLg) {
+  .container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .main {
+    margin-top: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .heroImage {
+    right: 20%;
+  }
+
+  .cardLayout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
