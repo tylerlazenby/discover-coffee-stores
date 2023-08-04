@@ -1,7 +1,20 @@
 import '@/styles/globals.scss'
+import { createContext } from 'react'
 
-const App = ({ Component, pageProps }) => (<div>
+const  StoreContext = createContext({})
+
+export const StoreProvider = ({ children }) => {
+  const initialState = {
+    latLong: '',
+    coffeeStores: [],
+  }
+  return (<StoreContext.Provider value={{state: initialState}}>
+    {children}
+  </StoreContext.Provider>)
+}
+
+const App = ({ Component, pageProps }) => (<StoreProvider>
     <Component {...pageProps} />
-  </div>)
+  </StoreProvider>)
 
 export default App
