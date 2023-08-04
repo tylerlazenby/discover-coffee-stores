@@ -17,16 +17,19 @@ export async function getStaticProps () {
 
 const Home = ({ coffeeStores }) => {
   const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } = useTrackLocation()
-  const [coffeeStoreData, setCoffeeStoreData] = useState(coffeeStores)
 
+  const [coffeeStoreData, setCoffeeStoreData] = useState(coffeeStores)
+  const [error, setError] = useState(null)
   const handleOnBannerBtnClick = () => handleTrackLocation()
 
   useEffect(() => {
     if (latLong) {
       fetchCoffeeStores(latLong, 30).then((result) => {
         setCoffeeStoreData(result)
+      }).catch(e => {
+        console.error(e)
+        setError(e.message)
       })
-        .catch(e => console.error(e))
     }
   }, [latLong])
 
@@ -43,6 +46,7 @@ const Home = ({ coffeeStores }) => {
         handleOnClick={handleOnBannerBtnClick}
       />
       {locationErrorMsg && <p>Something went wrong: {locationErrorMsg}</p>}
+      {error && <p>Something went wrong: {error}</p>}
       <div className={styles.heroImage}/>
       <div className={styles.sectionWrapper}>
         {coffeeStoreData.length > 0 && <><h2 className={styles.heading2}>Toronto stores</h2>

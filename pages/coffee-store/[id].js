@@ -18,18 +18,16 @@ const getStaticPaths = async () => {
   })
   return {
     paths,
-    fallback: true,
+    fallback: false,
   }
 }
 
 const getStaticProps = async ({ params }) => {
   const coffeeStores = await fetchCoffeeStores()
-
+  const findCoffeeSStoreById = coffeeStores.find(coffeeStore => coffeeStore.id.toString() === params.id)
   return {
     props: {
-      coffeeStore: coffeeStores.find(coffeeStore => {
-        return coffeeStore.id.toString() === params.id
-      })
+      coffeeStore: findCoffeeSStoreById ? findCoffeeSStoreById : {}
     }
   }
 }
