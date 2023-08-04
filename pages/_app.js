@@ -44,4 +44,6 @@ const App = ({ Component, pageProps }) => (<StoreProvider>
     <Component {...pageProps} />
   </StoreProvider>)
 
+export { StoreContext, ACTION_TYPES }
+
 export default App

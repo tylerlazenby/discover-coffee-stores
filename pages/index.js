@@ -4,7 +4,8 @@ import Banner from '@/components/banner'
 import Card from '@/components/card'
 import { fetchCoffeeStores } from '@/lib/coffee-store.js'
 import useTrackLocation from '@/hooks/use-track-location.js'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { ACTION_TYPES, StoreContext } from '@/pages/_app'
 
 export async function getStaticProps () {
   const coffeeStores = await fetchCoffeeStores()
@@ -15,23 +16,29 @@ export async function getStaticProps () {
   }
 }
 
-const Home = ({ coffeeStores }) => {
-  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } = useTrackLocation()
+const Home = () => {
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation()
 
-  const [coffeeStoreData, setCoffeeStoreData] = useState(coffeeStores)
+  /*const [coffeeStoreData, setCoffeeStoreData] = useState(coffeeStores)*/
   const [error, setError] = useState(null)
+  const { dispatch, state } = useContext(StoreContext)
+  const {coffeeStores, latLong} = state
   const handleOnBannerBtnClick = () => handleTrackLocation()
 
   useEffect(() => {
     if (latLong) {
       fetchCoffeeStores(latLong, 30).then((result) => {
-        setCoffeeStoreData(result)
+        dispatch({
+          type: ACTION_TYPES.SET_COFFEE_STORES, payload: {
+            coffeeStores: result
+          }
+        })
       }).catch(e => {
         console.error(e)
         setError(e.message)
       })
     }
-  }, [latLong])
+  }, [dispatch, latLong])
 
   return (<div className={styles.container}>
     <Head>
@@ -49,9 +56,11 @@ const Home = ({ coffeeStores }) => {
       {error && <p>Something went wrong: {error}</p>}
       <div className={styles.heroImage}/>
       <div className={styles.sectionWrapper}>
-        {coffeeStoreData.length > 0 && <><h2 className={styles.heading2}>Toronto stores</h2>
+        {coffeeStores.length > 0 && <><h2 className={styles.heading2}>Stores Near Me</h2>
+
           <div className={styles.cardLayout}>
-            {coffeeStoreData.map((coffeeStore, index) => {
+
+            {coffeeStores.map((coffeeStore, index) => {
               return (<Card
                 key={coffeeStore.id}
                 name={coffeeStore.name}
