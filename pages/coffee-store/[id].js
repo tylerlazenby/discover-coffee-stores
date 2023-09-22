@@ -6,6 +6,9 @@ import styles from '@/styles/pages/coffee-store.module.scss'
 import Image from 'next/image'
 import cls from 'classnames'
 import { fetchCoffeeStores } from '@/lib/coffee-store'
+import { useContext, useEffect, useState } from 'react'
+import { StoreContext } from '@/store/store-context'
+import { isEmpty } from '@/utils'
 
 const getStaticPaths = async () => {
   const coffeeStores = await fetchCoffeeStores()
@@ -17,8 +20,7 @@ const getStaticPaths = async () => {
     }
   })
   return {
-    paths,
-    fallback: true,
+    paths, fallback: true,
   }
 }
 
@@ -32,20 +34,34 @@ const getStaticProps = async ({ params }) => {
   }
 }
 
-const CoffeeStore = ({ coffeeStore }) => {
+const CoffeeStore = (initialProps) => {
+  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore)
+  const { state: { coffeeStores } } = useContext(StoreContext)
   const router = useRouter()
+  const id = router.query.id
+
+  useEffect(() => {
+    if (isEmpty(initialProps.coffeeStore)) {
+      if (coffeeStores.length > 0) {
+        const findCoffeeStoreById = coffeeStores.find(coffeeStore => coffeeStore.id.toString() === id) // dynamic id
+        setCoffeeStore(findCoffeeStoreById)
+      }
+    }
+  }, [id])
 
   if (router.isFallback) {
     return <div>Loading...</div>
   }
 
+  console.log('props.coffeeStore', initialProps.coffeeStore)
+  
   const { address, locality, name, imgUrl } = coffeeStore
 
   const handleUpvoteButton = () => {
     console.log('upvote button clicked')
   }
 
-  const altUrl = "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80";
+  const altUrl = 'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
 
   return (<>
     <Head>
@@ -68,15 +84,15 @@ const CoffeeStore = ({ coffeeStore }) => {
         </div>
         <div className={cls('glass', styles.col2)}>
           <div className={styles.iconWrapper}>
-            <Image src={"/static/icons/nearMe.svg"} width={24} height={24} alt={'icon'}/>
+            <Image src={'/static/icons/nearMe.svg'} width={24} height={24} alt={'icon'}/>
             <p className={styles.text}>{address}</p>
           </div>
           <div className={styles.iconWrapper}>
-            <Image src={"/static/icons/places.svg"} width={24} height={24} alt={'icon'}/>
+            <Image src={'/static/icons/places.svg'} width={24} height={24} alt={'icon'}/>
             <p className={styles.text}>{locality}</p>
           </div>
           <div className={styles.iconWrapper}>
-            <Image src={"/static/icons/star.svg"} width={24} height={24} alt={'icon'}/>
+            <Image src={'/static/icons/star.svg'} width={24} height={24} alt={'icon'}/>
             <p className={styles.text}>1</p>
           </div>
 
@@ -91,9 +107,7 @@ const CoffeeStore = ({ coffeeStore }) => {
 
 CoffeeStore.propTypes = {
   coffeeStore: PropTypes.shape({
-    address: PropTypes.string,
-    name: PropTypes.string,
-    neighbourhood: PropTypes.string,
+    address: PropTypes.string, name: PropTypes.string, neighbourhood: PropTypes.string,
   }).isRequired
 }
 
